@@ -29,6 +29,7 @@ function startGame() {
   const lock = 0
   function f(timestamp: number) {
     if (!prev) {
+      prev = timestamp
       gameLoop(delta)
     } else {
       delta = timestamp - prev
