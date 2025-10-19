@@ -1,8 +1,9 @@
 import { MouseService } from "../MouseService";
 import { SceneNode, SceneService } from "../SceneService";
 import { isCircle, Movable, WithMass } from "../objects";
-import { BaseRectangle, CanvasRectangle } from "../Objects/Rectangle";
+import { BaseRectangle } from "../Objects/Rectangle";
 import { HEIGHT, WIDTH } from "../constants";
+import { Circle } from "../Objects/Circle";
 
 type Node = SceneNode & {
   x: number;
@@ -19,8 +20,10 @@ export class Scene implements SceneNode {
   }
 
   constructor() {
-    // const ballA = new Circle()
-    // const ballB = new Circle()
+    // DEMO objects
+    //
+    // const ballA = new Circle(0,0,10)
+    // const ballB = new Circle(0,0,10)
     //
     // ballA.y = ballB.y = HEIGHT - ballA.radius
     // ballA.x = WIDTH / 2 - 50
@@ -32,7 +35,6 @@ export class Scene implements SceneNode {
     //
     // this.addNode(ballA)
     // this.addNode(ballB)
-
 
     const walls = [
       new BaseRectangle(0, 0, 1, HEIGHT),
@@ -64,9 +66,10 @@ export class Scene implements SceneNode {
       })
 
       if (!catchOne) {
-        const rect = new CanvasRectangle(a, b, 50, 50)
-        rect.vx = 0
-        this.addNode(rect)
+        const obj = new Circle(a, b, 10)
+        obj.x = a
+        obj.y = b
+        this.addNode(obj)
       }
     })
 

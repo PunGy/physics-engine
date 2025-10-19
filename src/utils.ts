@@ -2,7 +2,7 @@ import { CircleShape } from "./objects";
 import { SceneNode } from "./SceneService";
 import { Viewport } from "./ViewportService";
 
-export const g = 0 // 9.8
+export const g = 9.8
 
 export const isDrawable = <T extends SceneNode>(node: T): node is T & { draw: () => void } => {
   return 'draw' in node
@@ -16,7 +16,7 @@ export const circle = (x: number, y: number, radius: number) => {
 
   ctx.beginPath()
   ctx.fillStyle = '#ffffff'
-  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.arc(Viewport.scaled(x), Viewport.scaled(y), Viewport.scaled(radius), 0, Math.PI * 2);
   ctx.fill()
 }
 

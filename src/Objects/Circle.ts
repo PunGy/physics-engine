@@ -1,5 +1,5 @@
 import { WIDTH, HEIGHT } from '../constants'
-import { SceneService, SceneNode } from '../SceneService'
+import { SceneService } from '../SceneService'
 import { circle, g } from '../utils'
 import { BaseNode } from './BaseNode'
 
@@ -8,10 +8,12 @@ export class Circle extends BaseNode {
 
   x = WIDTH / 2
   y = HEIGHT / 2
-  mass = 5
+  mass = 3
   vy = 0
-  vx = 50
+  vx = 0
   radius = 10
+
+  bounciness = 0.6
 
   collidable = true
 
@@ -30,43 +32,35 @@ export class Circle extends BaseNode {
     if (this.holding) {
       return;
     }
-    const { delta } = SceneService
 
-    // console.log(`X: ${this.x}; VX: ${this.vx} VY: ${this.vy}`)
-    // console.log(delta)
+    const { delta } = SceneService;
 
-    if (this.y < HEIGHT - this.radius && this.y > this.radius) {
-      this.vy += this.mass * g * delta
-      this.y += Math.min(
-        HEIGHT - this.y - this.radius,
-        this.vy * delta + (g * delta ** 2) / 2,
-      )
-    } else {
-      this.vy /= 1.2
-      this.vy = -this.vy
-      this.y += this.vy * delta
+    const RESTING_THRESHOLD = 2
+
+    if (this.y < HEIGHT - this.radius) {
+      this.vy += g * delta;
     }
 
-    if ((this.x < WIDTH - this.radius) && (this.x > this.radius)) {
-      this.x += this.vx * delta
-    } else {
-      // collision with borders
-      const prevVX = this.vx
-      this.vx = -(this.vx)
-      const shift = this.vx * delta
+    this.x += this.vx * delta;
+    this.y += this.vy * delta;
 
-      if (prevVX > 0) {
-        this.x += Math.min(WIDTH - this.x - this.radius, shift)
-      } else {
-        this.x += Math.max(0, shift)
+    if (this.y + this.radius > HEIGHT) {
+      this.y = HEIGHT - this.radius;
+      this.vy *= -this.bounciness;
+      if (Math.abs(this.vy) < RESTING_THRESHOLD) {
+        this.vy = 0;
       }
-      this.x += this.vx * delta
+    } else if (this.y - this.radius < 0) {
+      this.y = this.radius;
+      this.vy *= -this.bounciness;
     }
-  }
 
-  onCollided(body: Circle) {
-    // this.vx = (2 * body.mass * body.vx + this.vx * (this.mass - body.mass)) / (this.mass + body.mass)
-    // this.vy /= 2
-    // this.vy = -this.vy
+    if (this.x + this.radius > WIDTH) {
+      this.x = WIDTH - this.radius;
+      this.vx *= -this.bounciness;
+    } else if (this.x - this.radius < 0) {
+      this.x = this.radius;
+      this.vx *= -this.bounciness;
+    }
   }
 }

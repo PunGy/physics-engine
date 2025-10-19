@@ -22,5 +22,5 @@ export type RectangleShape = {
 }
 
 export const isCircle = <T extends object>(node: T): node is T & CircleShape => {
-  return node?.type === 'circle'
+  return (node as any)?.type === 'circle'
 }

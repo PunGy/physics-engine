@@ -23,7 +23,7 @@ export class BaseRectangle extends BaseNode {
 export class CanvasRectangle extends BaseRectangle {
   draw() {
     Viewport.ctx.fillStyle = '#ffffff'
-    Viewport.ctx.fillRect(this.x, this.y, this.width, this.height)
+    Viewport.rect(this.x, this.y, this.width, this.height)
   }
 }
 
