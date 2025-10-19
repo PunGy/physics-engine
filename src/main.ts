@@ -8,7 +8,6 @@ import { SceneService } from './SceneService';
 import { isActable, isDrawable } from './utils';
 import { Viewport } from './ViewportService'
 
-let start: number;
 function startGame() {
   Viewport.init()
   MouseService.init()
@@ -30,7 +29,6 @@ function startGame() {
   const lock = 0
   function f(timestamp: number) {
     if (!prev) {
-      start = prev = timestamp
       gameLoop(delta)
     } else {
       delta = timestamp - prev
